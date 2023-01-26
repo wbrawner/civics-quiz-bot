@@ -1,4 +1,4 @@
-package com.wbrawner
+package com.wbrawner.civicsquizbot
 
 class QuestionTextParser {
     private val promptRegex = Regex("^(\\d+)\\.\\s+(.*)$")

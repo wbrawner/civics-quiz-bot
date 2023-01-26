@@ -6,12 +6,14 @@ plugins {
     application
     id("com.github.johnrengelman.shadow") version "7.1.2"
     kotlin("jvm") version "1.8.0"
+    id("app.cash.sqldelight") version "2.0.0-alpha05"
 }
 
 group = "com.wbrawner"
 version = "1.0-SNAPSHOT"
 
 repositories {
+    google()
     mavenCentral()
 }
 
@@ -20,6 +22,10 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+    implementation("app.cash.sqldelight:jdbc-driver:2.0.0-alpha05")
+    implementation("org.postgresql:postgresql:42.5.1")
+    implementation("com.zaxxer:HikariCP:5.0.1")
+    implementation("ch.qos.logback:logback-classic:1.3.5")
 }
 
 kotlin {
@@ -30,7 +36,7 @@ tasks.getByName<Test>("test") {
     useJUnitPlatform()
 }
 
-val main = "com.wbrawner.MainKt"
+val main = "com.wbrawner.civicsquizbot.Main"
 
 application {
     mainClass.set(main)
@@ -53,4 +59,13 @@ tasks.register("updateQuestions") {
         it.readText()
     }
     File(projectDir, "src/main/resources/questions.txt").writeText(text)
+}
+
+sqldelight {
+    databases {
+        create("Database") {
+            packageName.set("com.wbrawner.civicsquizbot")
+            dialect("app.cash.sqldelight:postgresql-dialect:2.0.0-alpha05")
+        }
+    }
 }

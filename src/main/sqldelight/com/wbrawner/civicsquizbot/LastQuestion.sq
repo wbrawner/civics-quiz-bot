@@ -1,0 +1,22 @@
+create:
+CREATE TABLE IF NOT EXISTS last_question (
+    user_id BIGINT NOT NULL PRIMARY KEY,
+    question_id INTEGER NOT NULL
+);
+
+selectByUserId:
+SELECT *
+FROM last_question
+WHERE user_id = ?;
+
+upsertLastQuestion:
+INSERT INTO last_question (user_id, question_id)
+VALUES (:user_id, :question_id)
+ON CONFLICT(user_id) DO
+UPDATE SET question_id = :question_id;
+
+updateQuestionBucket:
+UPDATE repetition
+SET bucket = ?
+WHERE question_id = ?
+AND user_id = ?;

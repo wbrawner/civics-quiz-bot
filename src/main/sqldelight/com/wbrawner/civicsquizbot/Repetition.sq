@@ -1,0 +1,41 @@
+create:
+CREATE TABLE IF NOT EXISTS repetition (
+    question_id INTEGER NOT NULL,
+    user_id BIGINT NOT NULL,
+    bucket INTEGER NOT NULL DEFAULT 0,
+    PRIMARY KEY (question_id, user_id)
+);
+
+countByUserId:
+SELECT COUNT(*)
+FROM repetition
+WHERE user_id = ?;
+
+selectByUserId:
+SELECT *
+FROM repetition
+WHERE user_id = ?;
+
+selectByQuestionIdAndUserId:
+SELECT *
+FROM repetition
+WHERE question_id = ?
+AND user_id = ?;
+
+selectRandomByUserIdAndBucket:
+SELECT *
+FROM repetition
+WHERE bucket = ?
+AND user_id = ?
+ORDER BY RANDOM()
+LIMIT 1;
+
+insertRepetition:
+INSERT INTO repetition
+VALUES ?;
+
+updateQuestionBucket:
+UPDATE repetition
+SET bucket = ?
+WHERE question_id = ?
+AND user_id = ?;
