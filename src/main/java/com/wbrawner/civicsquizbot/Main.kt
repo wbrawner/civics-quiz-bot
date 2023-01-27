@@ -32,9 +32,10 @@ object Main {
         val driver = dataSource.asJdbcDriver()
         val database = Database(driver)
         val questionService = DatabaseQuestionService(database, questions)
+        val reminderService = DatabaseReminderService(database)
         try {
             val telegramBotsApi = TelegramBotsApi(DefaultBotSession::class.java)
-            telegramBotsApi.registerBot(CivicsQuizHandler(questionService))
+            telegramBotsApi.registerBot(CivicsQuizHandler(questionService, reminderService))
         } catch (e: TelegramApiException) {
             e.printStackTrace()
         }

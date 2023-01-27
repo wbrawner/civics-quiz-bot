@@ -1,0 +1,27 @@
+create:
+CREATE TABLE IF NOT EXISTS reminder (
+    user_id BIGINT NOT NULL PRIMARY KEY,
+    hour INTEGER NOT NULL,
+    minute INTEGER NOT NULL
+);
+
+selectByUserId:
+SELECT *
+FROM reminder
+WHERE user_id = ?;
+
+selectByTime:
+SELECT *
+FROM reminder
+WHERE hour = ?
+AND minute = ?;
+
+upsertReminder:
+INSERT INTO reminder (user_id, hour, minute)
+VALUES (:user_id, :hour, :minute)
+ON CONFLICT(user_id) DO
+UPDATE SET hour = :hour, minute = :minute;
+
+deleteReminder:
+DELETE FROM reminder
+WHERE user_id = ?;
