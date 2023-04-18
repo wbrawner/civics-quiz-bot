@@ -41,16 +41,16 @@ class DatabaseQuestionService(
             else -> 3
         }
         val initialBucket = bucket
-        while (question == null) {
+        do {
             if (--bucket == 0) {
                 bucket = 3
             } else if (bucket == initialBucket) {
                 throw IllegalStateException("Failed to find questions in any bucket")
             }
-            question = database.repetitionQueries.selectRandomByUserIdAndBucket(0, userId)
+            question = database.repetitionQueries.selectRandomByUserIdAndBucket(bucket, userId)
                 .executeAsOneOrNull()
                 ?.question_id
-        }
+        } while (question == null)
         database.lastQuestionQueries.upsertLastQuestion(userId, question)
         return requireNotNull(questions[question]) { "Failed to retrieve random question from bucket 0" }
     }
