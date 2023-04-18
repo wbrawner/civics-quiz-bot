@@ -185,7 +185,8 @@ B: System of Government
 
 20. Who is one of your state's U.S. Senators now?* 
 
-. Answers will vary. [District of Columbia residents and residents of U.S. territories should answer that D.C. (or the territory where the applicant lives) has no U.S. Senators.] 
+. Michael F. Bennet (D)
+. John W. Hickenlooper (D)
 
 
 
@@ -203,7 +204,14 @@ B: System of Government
 
 23. Name your U.S. Representative. 
 
-. Answers will vary. [Residents of territories with nonvoting Delegates or Resident Commissioners may provide the name of that Delegate or Commissioner. Also acceptable is any statement that the territory has no (voting) Representatives in Congress.] 
+. Diana DeGette (D)
+. Joe Neguse (D)
+. Lauren Boebert (R)
+. Ken Buck (R)
+. Doug Lamborn (R)
+. Jason Crow (D)
+. Brittany Pettersen (D)
+. Yadira Caraveo (D)
 
 
 
@@ -377,13 +385,13 @@ B: System of Government
 
 43. Who is the Governor of your state now? 
 
-. Answers will vary. [District of Columbia residents should answer that D.C. does not have a Governor.] 
+. Jared Polis (Democratic Party)
 
 
 
 44. What is the capital of your state?* 
 
-. Answers will vary. [District of Columbia residents should answer that D.C. is not a state and does not have a capital. Residents of U.S. territories should name the capital of the territory.] 
+. Denver
 
 
 
