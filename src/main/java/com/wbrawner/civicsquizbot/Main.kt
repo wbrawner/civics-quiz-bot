@@ -1,8 +1,11 @@
 package com.wbrawner.civicsquizbot
 
 import app.cash.sqldelight.driver.jdbc.asJdbcDriver
+import ch.qos.logback.classic.Level
+import ch.qos.logback.classic.Logger
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
+import org.slf4j.LoggerFactory
 import org.telegram.telegrambots.meta.TelegramBotsApi
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException
 import org.telegram.telegrambots.updatesreceivers.DefaultBotSession
@@ -10,6 +13,9 @@ import org.telegram.telegrambots.updatesreceivers.DefaultBotSession
 object Main {
     @JvmStatic
     fun main(args: Array<String>) {
+        val hikariLogger = LoggerFactory.getLogger("com.zaxxer.hikari") as Logger
+        hikariLogger.level = Level.ERROR
+
         val questions = try {
             javaClass.getResourceAsStream("/questions.txt")
                 ?.bufferedReader()
