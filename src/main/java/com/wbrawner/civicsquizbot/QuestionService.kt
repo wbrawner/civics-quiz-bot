@@ -32,6 +32,7 @@ class DatabaseQuestionService(
             ?.question_id
         if (question != null) {
             database.lastQuestionQueries.upsertLastQuestion(userId, question)
+            logger.info("Returning question from bucket 0")
             return requireNotNull(questions[question]) { "Failed to retrieve random question from bucket 0" }
         }
 
@@ -40,17 +41,23 @@ class DatabaseQuestionService(
             in 6..8 -> 2
             else -> 3
         }
+        logger.info("Trying to get question from bucket $bucket")
+        question = database.repetitionQueries.selectRandomByUserIdAndBucket(bucket, userId)
+            .executeAsOneOrNull()
+            ?.question_id
         val initialBucket = bucket
-        do {
+        while (question == null) {
             if (--bucket == 0) {
                 bucket = 3
             } else if (bucket == initialBucket) {
                 throw IllegalStateException("Failed to find questions in any bucket")
             }
+            logger.info("Trying to get question from bucket $bucket")
             question = database.repetitionQueries.selectRandomByUserIdAndBucket(bucket, userId)
                 .executeAsOneOrNull()
                 ?.question_id
-        } while (question == null)
+        }
+        logger.info("Returning question from bucket $bucket")
         database.lastQuestionQueries.upsertLastQuestion(userId, question)
         return requireNotNull(questions[question]) { "Failed to retrieve random question from bucket 0" }
     }
