@@ -2,6 +2,7 @@ package com.wbrawner.civicsquizbot
 
 import java.security.SecureRandom
 import kotlin.math.max
+import kotlin.math.min
 
 interface QuestionService {
     fun randomQuestionForUser(userId: Long): Question
@@ -9,6 +10,8 @@ interface QuestionService {
     fun decreaseLastQuestionFrequency(userId: Long)
     fun answerLastQuestion(userId: Long): String?
 }
+
+private const val NUMBER_OF_BUCKETS = 3
 
 class DatabaseQuestionService(
     private val database: Database,
@@ -37,9 +40,8 @@ class DatabaseQuestionService(
         }
 
         var bucket = when (random.nextInt(10)) {
-            in 0..5 -> 1
-            in 6..8 -> 2
-            else -> 3
+            in 0..7 -> 1
+            else -> 2
         }
         logger.info("Trying to get question from bucket $bucket")
         question = database.repetitionQueries.selectRandomByUserIdAndBucket(bucket, userId)
@@ -48,7 +50,7 @@ class DatabaseQuestionService(
         val initialBucket = bucket
         while (question == null) {
             if (--bucket == 0) {
-                bucket = 3
+                bucket = NUMBER_OF_BUCKETS
             } else if (bucket == initialBucket) {
                 throw IllegalStateException("Failed to find questions in any bucket")
             }
@@ -95,7 +97,7 @@ class DatabaseQuestionService(
             ?.bucket
             ?: 0
         val newBucket = if (bucket == 0) {
-            2
+            min(2, NUMBER_OF_BUCKETS)
         } else {
             max(bucket - 1, 1)
         }
