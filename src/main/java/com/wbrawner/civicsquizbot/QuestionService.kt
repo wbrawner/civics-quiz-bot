@@ -72,6 +72,7 @@ class DatabaseQuestionService(
                 logger.info("Ignoring feedback for user $userId since they don't have a previously asked question")
                 return
             }
+        logger.info("Increasing frequency of question $lastQuestion for user $userId")
         val bucket = database.repetitionQueries.selectByQuestionIdAndUserId(lastQuestion, userId)
             .executeAsOneOrNull()
             ?.bucket
@@ -92,6 +93,7 @@ class DatabaseQuestionService(
                 logger.info("Ignoring feedback for user $userId since they don't have a previously asked question")
                 return
             }
+        logger.info("Reducing frequency of question $lastQuestion for user $userId")
         val bucket = database.repetitionQueries.selectByQuestionIdAndUserId(lastQuestion, userId)
             .executeAsOneOrNull()
             ?.bucket
